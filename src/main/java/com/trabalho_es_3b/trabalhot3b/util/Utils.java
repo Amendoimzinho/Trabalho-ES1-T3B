@@ -44,7 +44,7 @@ public final class Utils {
         String logradouroFormatado = formatarNome(logradouroCompleto);
 
         if (logradouroFormatado == null || logradouroFormatado.isEmpty()) {
-            return new String[]{"OUTROS", "NAO INFORMADO"};
+            return null;
         }
 
         // Separa a string em no máximo 2 partes (o tipo e o nome)
