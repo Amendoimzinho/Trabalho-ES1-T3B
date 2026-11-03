@@ -20,7 +20,7 @@ public class EnderecoController {
 
     @PostMapping
     public ResponseEntity<Endereco> cadastrarEndereco(@RequestBody Endereco endereco) {
-        Endereco enderecoSalvo = enderecoService.cadastrarendereco(endereco);
+        Endereco enderecoSalvo = enderecoService.cadastrarEndereco(endereco);
 
         return ResponseEntity.ok(enderecoSalvo);
     }

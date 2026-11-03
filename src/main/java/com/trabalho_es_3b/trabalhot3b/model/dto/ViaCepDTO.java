@@ -8,8 +8,17 @@ public class ViaCepDTO {
     private String logradouro;
     private String bairro;
     private String localidade; // Nome da Cidade
-    private String uf;         // Sigla do Estado
+    private String uf;
+    private String estado;// Sigla do Estado
     private Boolean erro;      // Retornado como true se o CEP não existir
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
 
     public String getCep() { return cep; }
     public void setCep(String cep) { this.cep = cep; }

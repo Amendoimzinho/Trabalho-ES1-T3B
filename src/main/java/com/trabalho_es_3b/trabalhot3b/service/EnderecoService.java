@@ -19,6 +19,60 @@ public class EnderecoService {
         this.enderecoDAO = enderecoDAO;
     }
 
+    public Endereco cadastrarEndereco(Endereco endereco) {
+
+        if (endereco == null || endereco.getCEP() == null ||
+                endereco.getCidade() == null || endereco.getCidade().getUnidadeFederacao() == null ||
+                endereco.getBairro() == null ||
+                endereco.getLogradouro() == null || endereco.getLogradouro().getTipoLogradouro() == null) {
+
+            return null;
+        }
+
+        if (endereco.getCidade().getNome().isBlank() ||
+                endereco.getCidade().getUnidadeFederacao().getSigla().isBlank() ||
+                endereco.getBairro().getNome().isBlank() ||
+                endereco.getLogradouro().getNome().isBlank() ||
+                endereco.getLogradouro().getTipoLogradouro().getNome().isBlank()) {
+
+            return null;
+        }
+
+        if (!Utils.isCepValido(endereco.getCEP())) {
+            return null;
+        }
+
+        endereco.setCEP(Utils.formatarCep(endereco.getCEP()));
+
+
+        endereco.getCidade().getUnidadeFederacao().setSigla(
+                Utils.formatarNome(endereco.getCidade().getUnidadeFederacao().getSigla())
+        );
+        if (endereco.getCidade().getUnidadeFederacao().getNome() != null) {
+            endereco.getCidade().getUnidadeFederacao().setNome(
+                    Utils.formatarNome(endereco.getCidade().getUnidadeFederacao().getNome())
+            );
+        }
+
+        // Cidade
+        endereco.getCidade().setNome(
+                Utils.formatarNome(endereco.getCidade().getNome())
+        );
+
+        // Bairro
+        endereco.getBairro().setNome(
+                Utils.formatarNome(endereco.getBairro().getNome())
+        );
+
+        // Logradouro e Tipo
+        endereco.getLogradouro().setNome(
+                Utils.formatarNome(endereco.getLogradouro().getNome())
+        );
+
+        // 4. Salva no banco de dados
+        return enderecoDAO.salvarEndereco(endereco);
+    }
+
     public List<Endereco> obterEnderecoPorCEP(String cep) {
 
         if (Utils.isCepValido(cep)) {
@@ -37,7 +91,7 @@ public class EnderecoService {
     }
 
     public Endereco obterEnderecoExterno(String cep) {
-        // 1. Validação defensiva do CEP
+
         if (!Utils.isCepValido(cep)) {
             return null;
         }
@@ -48,34 +102,33 @@ public class EnderecoService {
             RestTemplate restTemplate = new RestTemplate();
             ViaCepDTO dto = restTemplate.getForObject(url, ViaCepDTO.class);
 
-            // 2. Se o ViaCEP responder nulo ou com erro (CEP inexistente)
             if (dto == null || (dto.getErro() != null && dto.getErro())) {
                 return null;
             }
 
-            // 3. Separação de tipo e nome da rua
-            String logradouroCompleto = dto.getLogradouro();
-            String tipoLogradouro = "Rua";
-            String nomeRua = logradouroCompleto;
+            String[] logradouroCompleto = Utils.separarLogradouro(Utils.formatarNome(dto.getLogradouro()));
 
-            if (logradouroCompleto != null && logradouroCompleto.contains(" ")) {
-                String[] partes = logradouroCompleto.split(" ", 2);
-                tipoLogradouro = partes[0];
-                nomeRua = partes[1];
+            String tipoLogradouro;
+            String nomeRua;
+            if (logradouroCompleto == null) {
+                tipoLogradouro = "NAO INFORMADO";
+                nomeRua = "NAO INFORMADO";
+            }
+            else {
+                tipoLogradouro = logradouroCompleto[0];
+                nomeRua = logradouroCompleto[1];
             }
 
-            // 4. Monta as entidades na memória (POJOs) sem persistir
-            UnidadeFederacao estado = new UnidadeFederacao(dto.getUf().toUpperCase());
+            UnidadeFederacao estado = new UnidadeFederacao(Utils.formatarNome(dto.getUf()), Utils.formatarNome(dto.getEstado()));
             Cidade cidade = new Cidade(Utils.formatarNome(dto.getLocalidade()), estado);
             Bairro bairro = new Bairro(Utils.formatarNome(dto.getBairro()));
+
             TipoLogradouro tipo = new TipoLogradouro(tipoLogradouro);
             Logradouro rua = new Logradouro(tipo, nomeRua);
 
-            // 5. Retorna o objeto Endereco pronto para o Controller
-            return new Endereco(Utils.formatarCep(dto.getCep()), cidade, bairro, rua);
+            return new Endereco(cidade, bairro, rua, cep);
 
         } catch (Exception e) {
-            // Trata timeout ou erro de conexão com o ViaCEP
             return null;
         }
     }
