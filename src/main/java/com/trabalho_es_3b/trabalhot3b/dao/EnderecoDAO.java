@@ -5,6 +5,7 @@ import com.trabalho_es_3b.trabalhot3b.model.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,15 +78,6 @@ public class EnderecoDAO {
 
              return cidade;
         });
-    }
-
-    public boolean cadastrarCidade(Cidade cidade){
-        List<Cidade> cidadesComMesmoNome = obterCidadesPorNome(cidade.getNome());
-
-        if (cidadesComMesmoNome.isEmpty()){
-            String sql = "INSERT INTO \"Cidade\" (\"nomeCidade\", \"idEstado\")\n" +
-                    "VALUES ('teste1', 5);";
-        }
     }
 
     public Bairro obterBairroPorId(Integer id){
@@ -175,21 +167,64 @@ public class EnderecoDAO {
         });
     }
 
+    // retorna id do cadastro. zero se nao conseguiu.
+    public int cadastrarEstado(UnidadeFederacao estado){
+        String sql = """
+            SELECT * FROM "Estado" WHERE "nomeEstado" = ?
+            """;
+
+        boolean estadoExiste = false;
+        int indiceEstado = 0;
+
+        jdbc.query(sql, rs -> {
+                UnidadeFederacao e = null;
+
+                if (rs.next()) {
+                    estadoExiste = true;
+
+
+                }
+
+                return estado;
+
+            }, estado.getNome()
+        );
+
+        boolean estadoExiste = Boolean.TRUE.equals();
+
+        if (!estadoExiste) {
+            String sql = """
+                INSERT INTO "Cidade" ("nomeCidade, "idEstado")    
+                """
+        } else {
+
+        }
+    }
+
+//    public boolean cadastrarCidade(Cidade cidade){
+//        String sql = """
+//            SELECT c.*
+//            FROM "Cidade" c
+//            JOIN "Estado" e ON e."idEstado" = c."idEstado"
+//            WHERE c."nomeCidade" = ?
+//            AND e."nomeEstado" = ?
+//            """;
+//
+//        boolean existeCidadeIgual = Boolean.TRUE.equals(jdbc.query(
+//                sql, ResultSet::next,
+//                cidade.getNome(), cidade.getUnidadeFederacao().getNome()
+//        ));
+//
+//        if (!existeCidadeIgual){
+//            String
+//
+//            String sql = """
+//                INSERT INTO "Cidade" ("nomeCidade, "idEstado")
+//                """
+//        }
+//    }
 
     public Endereco cadastrarEndereco(Endereco endereco){
-        Cidade cidade = endereco.getCidade();
-        String nomeCidade = cidade.getNome();
 
-        UnidadeFederacao estado = cidade.getUnidadeFederacao();
-        String nomeEstado = estado.getNome();
-        String SiglaEstado = estado.getSigla();
-
-        String nomeBairro = endereco.getBairro().getNome();
-
-        Logradouro logradouro = endereco.getLogradouro();
-        String nomeLogradouro = logradouro.getNome();
-        String tipoNomeLogradouro = logradouro.getTipoLogradouro().getNome();
-
-        String cep = endereco.getCEP();
     }
 }
