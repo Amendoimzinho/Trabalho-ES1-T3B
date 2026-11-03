@@ -56,25 +56,22 @@ public class EnderecoController {
     }
 
     @GetMapping("/cidade")
-    public ResponseEntity<Cidade> obterCidade(
-            @RequestParam(value = "id", required = false) Integer id,
-            @RequestParam(value = "nome", required = false) String nome) {
+    public ResponseEntity<Cidade> obterCidadePorID(@RequestParam Integer id) {
+        Cidade cidade = enderecoService.obterCidadePorId(id);
 
-        if (id == null && nome == null)
-            return ResponseEntity.badRequest().build();
-
-        Cidade cidade = null;
-
-        if (id != null) {
-            cidade = enderecoService.obterCidadePorId(id);
-        } else {
-            cidade = enderecoService.obterCidadePorNome(nome);
-        }
-
-        if (cidade == null) {
+        if (cidade == null)
             return ResponseEntity.notFound().build();
-        }
 
         return ResponseEntity.ok(cidade);
+    }
+
+    @GetMapping("/cidade")
+    public ResponseEntity<List<Cidade>> obterCidadePorNome(@RequestParam String nome) {
+        List<Cidade> cidades = enderecoService.obterCidadePorNome(nome);
+
+        if (cidades == null || cidades.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(cidades);
     }
 }

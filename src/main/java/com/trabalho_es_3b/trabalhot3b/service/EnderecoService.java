@@ -70,11 +70,10 @@ public class EnderecoService {
         );
 
         // 4. Salva no banco de dados
-        return enderecoDAO.salvarEndereco(endereco);
+        return enderecoDAO.cadastrarEndereco(endereco);
     }
 
     public List<Endereco> obterEnderecoPorCEP(String cep) {
-
         if (Utils.isCepValido(cep)) {
             return enderecoDAO.obterEnderecosPorCEP(Utils.formatarCep(cep));
         }
@@ -91,7 +90,6 @@ public class EnderecoService {
     }
 
     public Endereco obterEnderecoExterno(String cep) {
-
         if (!Utils.isCepValido(cep)) {
             return null;
         }
@@ -141,7 +139,7 @@ public class EnderecoService {
         return enderecoDAO.obterCidadePorId(id);
     }
 
-    public Cidade obterCidadePorNome(String nome) {
+    public List<Cidade> obterCidadePorNome(String nome) {
         if (nome == null || nome.isBlank()) {
             return null;
         }
