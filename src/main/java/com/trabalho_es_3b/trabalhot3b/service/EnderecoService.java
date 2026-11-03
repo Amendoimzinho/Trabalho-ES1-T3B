@@ -21,20 +21,33 @@ public class EnderecoService {
     public List<Endereco> obterEnderecoPorCEP(String cep) {
 
         if (Utils.isCepValido(cep)) {
-            String cepFormatado = Utils.formatarCep(cep);
-            return enderecoDAO.obterEnderecosPorCEP(cepFormatado);
+            return enderecoDAO.obterEnderecosPorCEP(Utils.formatarCep(cep));
         }
 
         return null;
     }
 
     public Endereco obterEnderecoPorID (Integer id){
+        if (id == null || id <= 0) {
+            return null;
+        }
+
         return enderecoDAO.obterEnderecosPorID(id);
     }
 
     public Cidade obterCidadePorId (Integer id) {
+        if (id == null || id <= 0) {
+            return null;
+        }
+
         return enderecoDAO.obterCidadePorId(id);
     }
 
-    public
+    public Cidade obterCidadePorNome(String nome) {
+        if (nome == null || nome.isBlank()) {
+            return null;
+        }
+
+        return enderecoDAO.obterCidadePorNome(Utils.formatarNome(nome));
+    }
 }

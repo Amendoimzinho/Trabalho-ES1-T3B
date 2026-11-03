@@ -47,7 +47,7 @@ public class EnderecoController {
 
     @GetMapping("/buscarcep")
     public ResponseEntity<Endereco> obterEnderecoExterno(@RequestParam String cep) {
-        Endereco endereco = enderecoService.obterEnderecoExterno();
+        Endereco endereco = enderecoService.obterEnderecoExterno(cep);
 
         if (endereco == null)
             return  ResponseEntity.notFound().build();
