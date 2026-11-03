@@ -32,7 +32,7 @@ public class EnderecoService {
             return null;
         }
 
-        return enderecoDAO.obterEnderecosPorID(id);
+        return enderecoDAO.obterEnderecoPorId(id);
     }
 
     public Cidade obterCidadePorId (Integer id) {

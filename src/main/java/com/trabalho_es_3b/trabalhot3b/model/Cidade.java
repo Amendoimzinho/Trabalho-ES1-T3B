@@ -1,12 +1,12 @@
 package com.trabalho_es_3b.trabalhot3b.model;
 
 public class Cidade {
-    private UnidadeFederacao unidadeFederacao;
     private String nome;
+    private UnidadeFederacao unidadeFederacao;
 
-    public Cidade(UnidadeFederacao unidadeFederacao, String nome) {
-        this.unidadeFederacao = unidadeFederacao;
+    public Cidade(String nome, UnidadeFederacao unidadeFederacao) {
         this.nome = nome;
+        this.unidadeFederacao = unidadeFederacao;
     }
 
     public UnidadeFederacao getUnidadeFederacao() {

@@ -60,7 +60,7 @@ public class EnderecoController {
             @RequestParam(value = "id", required = false) Integer id,
             @RequestParam(value = "nome", required = false) String nome) {
 
-        if (id == null && nome == null) // Nenhum Parametro
+        if (id == null && nome == null)
             return ResponseEntity.badRequest().build();
 
         Cidade cidade = null;
