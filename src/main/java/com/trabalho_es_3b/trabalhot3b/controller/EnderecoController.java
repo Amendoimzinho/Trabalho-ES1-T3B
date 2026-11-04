@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/enderecos")
+@CrossOrigin(origins = "*")
 public class EnderecoController {
     private final EnderecoService enderecoService;
 

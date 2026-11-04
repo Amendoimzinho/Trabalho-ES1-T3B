@@ -69,6 +69,11 @@ public class EnderecoService {
                 Utils.formatarNome(endereco.getLogradouro().getNome())
         );
 
+        // TipoLogradouro (Faltou esse no seu código!)
+        endereco.getLogradouro().getTipoLogradouro().setNome(
+                Utils.formatarNome(endereco.getLogradouro().getTipoLogradouro().getNome())
+        );
+
         return enderecoDAO.cadastrarEndereco(endereco);
     }
 

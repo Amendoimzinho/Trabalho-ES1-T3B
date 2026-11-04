@@ -4,6 +4,7 @@ public class Logradouro {
     private TipoLogradouro tipoLogradouro;
     private String nome;
 
+    public Logradouro() {}
     public Logradouro(TipoLogradouro tipoLogradouro, String nome) {
         this.tipoLogradouro = tipoLogradouro;
         this.nome = nome;

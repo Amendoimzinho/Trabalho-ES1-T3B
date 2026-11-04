@@ -173,7 +173,7 @@ public class EnderecoDAO {
                 String nomeEstado = rs.getString("nomeEstado");
                 String siglaUF =  rs.getString("siglaUF");
 
-                estado = new UnidadeFederacao(nomeEstado, siglaUF);
+                estado = new UnidadeFederacao(siglaUF, nomeEstado);
             }
             return estado;
         }, id);
@@ -191,18 +191,18 @@ public class EnderecoDAO {
         } catch (EmptyResultDataAccessException e) {
 
             String insertSql = """
-            INSERT INTO "Estado" ("nomeEstado")
-            VALUES (?)
+            INSERT INTO "Estado" ("nomeEstado", "siglaUF")
+            VALUES (?, ?)
             RETURNING "idEstado"
             """;
 
-            return jdbc.queryForObject(insertSql, Integer.class, estado.getNome());
+            return jdbc.queryForObject(insertSql, Integer.class, estado.getNome(), estado.getSigla());
         }
     }
 
     public Integer cadastrarCidade(Cidade cidade, Integer idEstado){
         String sql = """
-        SELECT c.*
+        SELECT c."idCidade"
         FROM "Cidade" c
         JOIN "Estado" e ON e."idEstado" = c."idEstado"
         WHERE c."nomeCidade" = ?
@@ -266,15 +266,15 @@ public class EnderecoDAO {
     public Integer cadastrarTipoLogradouro(TipoLogradouro tipoLogradouro){
         String sql = """
         SELECT "idTipoLogradouro"
-        FROM "Logradouro"
-        WHERE "nomeLogradouro" = ?
+        FROM "TipoLogradouro"
+        WHERE "nomeTipoLogradouro" = ?
         """;
 
         try {
             return jdbc.queryForObject(sql, Integer.class, tipoLogradouro.getNome());
         } catch (EmptyResultDataAccessException e) {
             String insertSql = """
-            INSERT INTO "tipoLogradouro" ("nomeTipoLogradouro")
+            INSERT INTO "TipoLogradouro" ("nomeTipoLogradouro")
             VALUES (?)
             RETURNING "idTipoLogradouro"
             """;

@@ -9,6 +9,7 @@ public class Cidade {
         this.unidadeFederacao = unidadeFederacao;
     }
 
+    public Cidade() {}
     public UnidadeFederacao getUnidadeFederacao() {
         return unidadeFederacao;
     }

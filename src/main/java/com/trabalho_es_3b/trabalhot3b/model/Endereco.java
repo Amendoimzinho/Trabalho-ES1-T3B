@@ -9,6 +9,7 @@ public class Endereco {
 
     private String CEP;
 
+    public Endereco() {}
     public Endereco(Cidade cidade, Bairro bairro, Logradouro logradouro, String CEP, Integer id) {
         this.cidade = cidade;
         this.bairro = bairro;

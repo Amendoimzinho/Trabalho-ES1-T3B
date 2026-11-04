@@ -4,6 +4,7 @@ public class UnidadeFederacao {
     private String sigla;
     private String nome;
 
+    public UnidadeFederacao() {}
     public UnidadeFederacao(String sigla, String nome) {
         this.sigla = sigla;
         this.nome = nome;
