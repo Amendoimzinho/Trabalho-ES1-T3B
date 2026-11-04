@@ -69,7 +69,6 @@ public class EnderecoService {
                 Utils.formatarNome(endereco.getLogradouro().getNome())
         );
 
-        // 4. Salva no banco de dados
         return enderecoDAO.cadastrarEndereco(endereco);
     }
 
@@ -144,6 +143,6 @@ public class EnderecoService {
             return null;
         }
 
-        return enderecoDAO.obterCidadePorNome(Utils.formatarNome(nome));
+        return enderecoDAO.obterCidadesPorNome(Utils.formatarNome(nome));
     }
 }

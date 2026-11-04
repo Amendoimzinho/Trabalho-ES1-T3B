@@ -22,11 +22,15 @@ public class EnderecoController {
     public ResponseEntity<Endereco> cadastrarEndereco(@RequestBody Endereco endereco) {
         Endereco enderecoSalvo = enderecoService.cadastrarEndereco(endereco);
 
+        if (enderecoSalvo == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
         return ResponseEntity.ok(enderecoSalvo);
     }
 
-    @GetMapping("/busca")
-    public ResponseEntity<List<Endereco>> obterEnderecoPorCEP(@RequestParam String cep) {
+    @GetMapping("/busca/cep/{cep}")
+    public ResponseEntity<List<Endereco>> obterEnderecoPorCEP(@PathVariable String cep) {
         List<Endereco> enderecosPorCep = enderecoService.obterEnderecoPorCEP(cep);
 
         if (enderecosPorCep == null || enderecosPorCep.isEmpty())
@@ -35,8 +39,8 @@ public class EnderecoController {
         return ResponseEntity.ok(enderecosPorCep);
     }
 
-    @GetMapping("/busca")
-    public ResponseEntity<Endereco> obterEnderecoPorID(@RequestParam Integer id) {
+    @GetMapping("/busca/id/{id}")
+    public ResponseEntity<Endereco> obterEnderecoPorID(@PathVariable Integer id) {
         Endereco endereco = enderecoService.obterEnderecoPorID(id);
 
         if (endereco == null)
@@ -45,8 +49,8 @@ public class EnderecoController {
         return ResponseEntity.ok(endereco);
     }
 
-    @GetMapping("/buscarcep")
-    public ResponseEntity<Endereco> obterEnderecoExterno(@RequestParam String cep) {
+    @GetMapping("/externo/{cep}")
+    public ResponseEntity<Endereco> obterEnderecoExterno(@PathVariable String cep) {
         Endereco endereco = enderecoService.obterEnderecoExterno(cep);
 
         if (endereco == null)
@@ -55,8 +59,8 @@ public class EnderecoController {
         return ResponseEntity.ok(endereco);
     }
 
-    @GetMapping("/cidade")
-    public ResponseEntity<Cidade> obterCidadePorID(@RequestParam Integer id) {
+    @GetMapping("/cidade/id/{id}")
+    public ResponseEntity<Cidade> obterCidadePorID(@PathVariable Integer id) {
         Cidade cidade = enderecoService.obterCidadePorId(id);
 
         if (cidade == null)
@@ -65,8 +69,8 @@ public class EnderecoController {
         return ResponseEntity.ok(cidade);
     }
 
-    @GetMapping("/cidade")
-    public ResponseEntity<List<Cidade>> obterCidadePorNome(@RequestParam String nome) {
+    @GetMapping("/cidade/nome/{nome}")
+    public ResponseEntity<List<Cidade>> obterCidadePorNome(@PathVariable String nome) {
         List<Cidade> cidades = enderecoService.obterCidadePorNome(nome);
 
         if (cidades == null || cidades.isEmpty())
