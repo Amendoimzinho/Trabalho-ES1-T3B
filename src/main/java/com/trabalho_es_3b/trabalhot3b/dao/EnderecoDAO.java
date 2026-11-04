@@ -42,7 +42,7 @@ public class EnderecoDAO {
 
     public Endereco obterEnderecoPorId(Integer id){
         String sql = """
-        SELECT * 
+        SELECT *
         FROM "Endereco"
         WHERE "idEndereco" = ?
         """;
@@ -126,7 +126,7 @@ public class EnderecoDAO {
         String sql = """
         SELECT *
         FROM "TipoLogradouro"
-        WHERE idTipoLogradouro = ?
+        WHERE "idTipoLogradouro" = ?
         """;
 
         return jdbc.query(sql, rs -> {
@@ -164,7 +164,7 @@ public class EnderecoDAO {
         String sql = """
         SELECT *
         FROM "Estado"
-        WHERE "idEstado = ?
+        WHERE "idEstado" = ?
         """;
 
         return jdbc.query(sql, rs -> {
@@ -192,7 +192,7 @@ public class EnderecoDAO {
 
             String insertSql = """
             INSERT INTO "Estado" ("nomeEstado")
-            VALUES ('?')
+            VALUES (?)
             RETURNING "idEstado"
             """;
 
@@ -215,7 +215,7 @@ public class EnderecoDAO {
         } catch (EmptyResultDataAccessException e) {
             String insertSql = """
             INSERT INTO "Cidade" ("nomeCidade", "idEstado")
-            VALUES ('?', ?)
+            VALUES (?, ?)
             RETURNING "idCidade"
             """;
 
@@ -234,8 +234,8 @@ public class EnderecoDAO {
             return jdbc.queryForObject(sql, Integer.class, bairro.getNome());
         } catch (EmptyResultDataAccessException e) {
             String insertSql = """
-            INSERT INTO "Bairro" ("nomeBairro", "idBairro")
-            VALUES ('?', bairro.getNome())
+            INSERT INTO "Bairro" ("nomeBairro")
+            VALUES (?)
             RETURNING "idBairro"
             """;
 
@@ -255,7 +255,7 @@ public class EnderecoDAO {
         } catch (EmptyResultDataAccessException e) {
             String insertSql = """
             INSERT INTO "Rua" ("idTipoLogradouro", "nomeRua")
-            VALUES (?, '?')
+            VALUES (?, ?)
             RETURNING "idRua"
             """;
 
@@ -275,7 +275,7 @@ public class EnderecoDAO {
         } catch (EmptyResultDataAccessException e) {
             String insertSql = """
             INSERT INTO "tipoLogradouro" ("nomeTipoLogradouro")
-            VALUES ('?')
+            VALUES (?)
             RETURNING "idTipoLogradouro"
             """;
 
