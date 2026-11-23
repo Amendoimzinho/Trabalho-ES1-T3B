@@ -152,12 +152,4 @@ public class EnderecoService {
 
         return enderecoDAO.obterTipoLogradouroPorNome(Utils.formatarNome(nome));
     }
-
-    public Bairro obterBairroPorNome(String nome) {
-        if (nome == null || nome.isBlank()) {
-            return null;
-        }
-
-        return enderecoDAO.obterBairroPorNome(Utils.formatarNome(nome));
-    }
 }

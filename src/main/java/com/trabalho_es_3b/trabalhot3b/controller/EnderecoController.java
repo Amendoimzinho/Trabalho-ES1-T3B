@@ -60,8 +60,8 @@ public class EnderecoController {
         return ResponseEntity.ok(endereco);
     }
 
-    @GetMapping("/cidade")
-    public ResponseEntity<Cidade> obterCidadePorID(@RequestParam Integer id) {
+    @GetMapping("/cidade/id/{id}")
+    public ResponseEntity<Cidade> obterCidadePorID(@PathVariable Integer id) {
         Cidade cidade = enderecoService.obterCidadePorId(id);
 
         if (cidade == null)
@@ -70,8 +70,8 @@ public class EnderecoController {
         return ResponseEntity.ok(cidade);
     }
 
-    @GetMapping("/cidade")
-    public ResponseEntity<List<Cidade>> obterCidadePorNome(@RequestParam String nome) {
+    @GetMapping("/cidade/nome/{nome}")
+    public ResponseEntity<List<Cidade>> obterCidadePorNome(@PathVariable String nome) {
         List<Cidade> cidades = enderecoService.obterCidadePorNome(nome);
 
         if (cidades == null || cidades.isEmpty())
