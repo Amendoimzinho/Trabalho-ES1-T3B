@@ -21,59 +21,8 @@ public class EnderecoService {
 
     public Endereco cadastrarEndereco(Endereco endereco) {
 
-        if (endereco == null || endereco.getCEP() == null ||
-                endereco.getCidade() == null || endereco.getCidade().getUnidadeFederacao() == null ||
-                endereco.getBairro() == null ||
-                endereco.getLogradouro() == null || endereco.getLogradouro().getTipoLogradouro() == null) {
-
-            return null;
-        }
-
-        if (endereco.getCidade().getNome().isBlank() ||
-                endereco.getCidade().getUnidadeFederacao().getSigla().isBlank() ||
-                endereco.getBairro().getNome().isBlank() ||
-                endereco.getLogradouro().getNome().isBlank() ||
-                endereco.getLogradouro().getTipoLogradouro().getNome().isBlank()) {
-
-            return null;
-        }
-
-        if (!Utils.isCepValido(endereco.getCEP())) {
-            return null;
-        }
-
-        endereco.setCEP(Utils.formatarCep(endereco.getCEP()));
-
-
-        endereco.getCidade().getUnidadeFederacao().setSigla(
-                Utils.formatarNome(endereco.getCidade().getUnidadeFederacao().getSigla())
-        );
-        if (endereco.getCidade().getUnidadeFederacao().getNome() != null) {
-            endereco.getCidade().getUnidadeFederacao().setNome(
-                    Utils.formatarNome(endereco.getCidade().getUnidadeFederacao().getNome())
-            );
-        }
-
-        // Cidade
-        endereco.getCidade().setNome(
-                Utils.formatarNome(endereco.getCidade().getNome())
-        );
-
-        // Bairro
-        endereco.getBairro().setNome(
-                Utils.formatarNome(endereco.getBairro().getNome())
-        );
-
-        // Logradouro e Tipo
-        endereco.getLogradouro().setNome(
-                Utils.formatarNome(endereco.getLogradouro().getNome())
-        );
-
-        // TipoLogradouro (Faltou esse no seu código!)
-        endereco.getLogradouro().getTipoLogradouro().setNome(
-                Utils.formatarNome(endereco.getLogradouro().getTipoLogradouro().getNome())
-        );
-
+       if (obterCidadePorNome(endereco.getCidade().getNome()) == null
+               || obterTipoLogradouroPorNome(endereco.getLogradouro().getTipoLogradouro().getNome()) == null)
         return enderecoDAO.cadastrarEndereco(endereco);
     }
 
@@ -149,5 +98,29 @@ public class EnderecoService {
         }
 
         return enderecoDAO.obterCidadesPorNome(Utils.formatarNome(nome));
+    }
+
+    public UnidadeFederacao obterUnidadeFederacaoPorNome(String nome) {
+        if (nome == null || nome.isBlank()) {
+            return null;
+        }
+
+        return enderecoDAO.obterUnidadeFederacaoPorNome(Utils.formatarNome(nome));
+    }
+
+    public TipoLogradouro obterTipoLogradouroPorNome(String nome) {
+        if (nome == null || nome.isBlank()) {
+            return null;
+        }
+
+        return enderecoDAO.obterTipoLogradouroPorNome(Utils.formatarNome(nome));
+    }
+
+    public Bairro obterBairroPorNome(String nome) {
+        if (nome == null || nome.isBlank()) {
+            return null;
+        }
+
+        return enderecoDAO.obterBairroPorNome(Utils.formatarNome(nome));
     }
 }

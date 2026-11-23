@@ -30,8 +30,8 @@ public class EnderecoController {
         return ResponseEntity.ok(enderecoSalvo);
     }
 
-    @GetMapping("/busca/cep/{cep}")
-    public ResponseEntity<List<Endereco>> obterEnderecoPorCEP(@PathVariable String cep) {
+    @GetMapping("/busca")
+    public ResponseEntity<List<Endereco>> obterEnderecoPorCEP(@RequestParam String cep) {
         List<Endereco> enderecosPorCep = enderecoService.obterEnderecoPorCEP(cep);
 
         if (enderecosPorCep == null || enderecosPorCep.isEmpty())
@@ -40,8 +40,8 @@ public class EnderecoController {
         return ResponseEntity.ok(enderecosPorCep);
     }
 
-    @GetMapping("/busca/id/{id}")
-    public ResponseEntity<Endereco> obterEnderecoPorID(@PathVariable Integer id) {
+    @GetMapping("/busca")
+    public ResponseEntity<Endereco> obterEnderecoPorID(@RequestParam Integer id) {
         Endereco endereco = enderecoService.obterEnderecoPorID(id);
 
         if (endereco == null)
@@ -50,8 +50,8 @@ public class EnderecoController {
         return ResponseEntity.ok(endereco);
     }
 
-    @GetMapping("/externo/{cep}")
-    public ResponseEntity<Endereco> obterEnderecoExterno(@PathVariable String cep) {
+    @GetMapping("/buscarcep")
+    public ResponseEntity<Endereco> obterEnderecoExterno(@RequestParam String cep) {
         Endereco endereco = enderecoService.obterEnderecoExterno(cep);
 
         if (endereco == null)
@@ -60,8 +60,8 @@ public class EnderecoController {
         return ResponseEntity.ok(endereco);
     }
 
-    @GetMapping("/cidade/id/{id}")
-    public ResponseEntity<Cidade> obterCidadePorID(@PathVariable Integer id) {
+    @GetMapping("/cidade")
+    public ResponseEntity<Cidade> obterCidadePorID(@RequestParam Integer id) {
         Cidade cidade = enderecoService.obterCidadePorId(id);
 
         if (cidade == null)
@@ -70,8 +70,8 @@ public class EnderecoController {
         return ResponseEntity.ok(cidade);
     }
 
-    @GetMapping("/cidade/nome/{nome}")
-    public ResponseEntity<List<Cidade>> obterCidadePorNome(@PathVariable String nome) {
+    @GetMapping("/cidade")
+    public ResponseEntity<List<Cidade>> obterCidadePorNome(@RequestParam String nome) {
         List<Cidade> cidades = enderecoService.obterCidadePorNome(nome);
 
         if (cidades == null || cidades.isEmpty())
