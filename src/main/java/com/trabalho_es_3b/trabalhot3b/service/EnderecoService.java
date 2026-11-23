@@ -21,8 +21,45 @@ public class EnderecoService {
 
     public Endereco cadastrarEndereco(Endereco endereco) {
 
-       if (obterCidadePorNome(endereco.getCidade().getNome()) == null
-               || obterTipoLogradouroPorNome(endereco.getLogradouro().getTipoLogradouro().getNome()) == null)
+        if (endereco == null || endereco.getCEP() == null ||
+                endereco.getCidade() == null || endereco.getCidade().getUnidadeFederacao() == null ||
+                endereco.getBairro() == null ||
+                endereco.getLogradouro() == null || endereco.getLogradouro().getTipoLogradouro() == null) {
+            return null;
+        }
+
+        if (endereco.getCidade().getNome().isBlank() ||
+                endereco.getCidade().getUnidadeFederacao().getNome() == null ||
+                endereco.getCidade().getUnidadeFederacao().getNome().isBlank() ||
+                endereco.getBairro().getNome().isBlank() ||
+                endereco.getLogradouro().getNome().isBlank() ||
+                endereco.getLogradouro().getTipoLogradouro().getNome().isBlank()) {
+            return null;
+        }
+
+        if (!Utils.isCepValido(endereco.getCEP())) {
+            return null;
+        }
+
+        endereco.setCEP(Utils.formatarCep(endereco.getCEP()));
+
+        String nomeEstadoFormatado = Utils.formatarNome(endereco.getCidade().getUnidadeFederacao().getNome());
+        String nomeTipoFormatado = Utils.formatarNome(endereco.getLogradouro().getTipoLogradouro().getNome());
+
+        UnidadeFederacao estadoExistente = obterUnidadeFederacaoPorNome(nomeEstadoFormatado);
+        TipoLogradouro tipoExistente = obterTipoLogradouroPorNome(nomeTipoFormatado);
+
+        if (estadoExistente == null || tipoExistente == null) {
+            return null;
+        }
+
+        endereco.getCidade().setUnidadeFederacao(estadoExistente);
+        endereco.getLogradouro().setTipoLogradouro(tipoExistente);
+
+        endereco.getCidade().setNome(Utils.formatarNome(endereco.getCidade().getNome()));
+        endereco.getBairro().setNome(Utils.formatarNome(endereco.getBairro().getNome()));
+        endereco.getLogradouro().setNome(Utils.formatarNome(endereco.getLogradouro().getNome()));
+
         return enderecoDAO.cadastrarEndereco(endereco);
     }
 

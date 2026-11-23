@@ -179,27 +179,6 @@ public class EnderecoDAO {
         }, id);
     }
 
-    public Integer cadastrarEstado(UnidadeFederacao estado){
-        String sql = """
-        SELECT "idEstado"
-        FROM "Estado"
-        WHERE "nomeEstado" = ?
-        """;
-
-        try {
-            return jdbc.queryForObject(sql, Integer.class, estado.getNome());
-        } catch (EmptyResultDataAccessException e) {
-
-            String insertSql = """
-            INSERT INTO "Estado" ("nomeEstado", "siglaUF")
-            VALUES (?, ?)
-            RETURNING "idEstado"
-            """;
-
-            return jdbc.queryForObject(insertSql, Integer.class, estado.getNome(), estado.getSigla());
-        }
-    }
-
     public Integer cadastrarCidade(Cidade cidade, Integer idEstado){
         String sql = """
         SELECT c."idCidade"
@@ -263,31 +242,29 @@ public class EnderecoDAO {
         }
     }
 
-    public Integer cadastrarTipoLogradouro(TipoLogradouro tipoLogradouro){
+    public Integer buscarIdEstado(UnidadeFederacao estado) {
+        String sql = """
+        SELECT "idEstado"
+        FROM "Estado"
+        WHERE "nomeEstado" = ?
+        """;
+        return jdbc.queryForObject(sql, Integer.class, estado.getNome());
+    }
+
+    public Integer buscarIdTipoLogradouro(TipoLogradouro tipoLogradouro) {
         String sql = """
         SELECT "idTipoLogradouro"
         FROM "TipoLogradouro"
         WHERE "nomeTipoLogradouro" = ?
         """;
-
-        try {
-            return jdbc.queryForObject(sql, Integer.class, tipoLogradouro.getNome());
-        } catch (EmptyResultDataAccessException e) {
-            String insertSql = """
-            INSERT INTO "TipoLogradouro" ("nomeTipoLogradouro")
-            VALUES (?)
-            RETURNING "idTipoLogradouro"
-            """;
-
-            return jdbc.queryForObject(insertSql, Integer.class, tipoLogradouro.getNome());
-        }
+        return jdbc.queryForObject(sql, Integer.class, tipoLogradouro.getNome());
     }
 
     public Endereco cadastrarEndereco(Endereco endereco){
-        Integer idEstado = cadastrarEstado(endereco.getCidade().getUnidadeFederacao());
+        Integer idEstado = buscarIdEstado(endereco.getCidade().getUnidadeFederacao());
         Integer idCidade = cadastrarCidade(endereco.getCidade(), idEstado);
         Integer idBairro = cadastrarBairro(endereco.getBairro());
-        Integer idTipoLogradouro = cadastrarTipoLogradouro(endereco.getLogradouro().getTipoLogradouro());
+        Integer idTipoLogradouro = buscarIdTipoLogradouro(endereco.getLogradouro().getTipoLogradouro());
         Integer idLogradouro = cadastrarRua(endereco.getLogradouro(), idTipoLogradouro);
 
         String insertSql = """
