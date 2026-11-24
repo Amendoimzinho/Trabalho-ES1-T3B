@@ -4,8 +4,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.trabalho_es_3b.trabalhot3b.service.EnderecoService;
-import com.trabalho_es_3b.trabalhot3b.model.Cidade;
-import com.trabalho_es_3b.trabalhot3b.model.Endereco;
+
+//import com.trabalho_es_3b.trabalhot3b.model.Cidade;
+//import com.trabalho_es_3b.trabalhot3b.model.Endereco;
+
+import org.models.Cidade;
+import org.models.Endereco;
+
 
 import java.util.List;
 
@@ -30,8 +35,8 @@ public class EnderecoController {
         return ResponseEntity.ok(enderecoSalvo);
     }
 
-    @GetMapping("/busca")
-    public ResponseEntity<List<Endereco>> obterEnderecoPorCEP(@RequestParam String cep) {
+    @GetMapping("/busca/cep/{cep}")
+    public ResponseEntity<List<Endereco>> obterEnderecoPorCEP(@PathVariable String cep) {
         List<Endereco> enderecosPorCep = enderecoService.obterEnderecoPorCEP(cep);
 
         if (enderecosPorCep == null || enderecosPorCep.isEmpty())
@@ -40,8 +45,8 @@ public class EnderecoController {
         return ResponseEntity.ok(enderecosPorCep);
     }
 
-    @GetMapping("/busca")
-    public ResponseEntity<Endereco> obterEnderecoPorID(@RequestParam Integer id) {
+    @GetMapping("/busca/id/{id}")
+    public ResponseEntity<Endereco> obterEnderecoPorID(@PathVariable Integer id) {
         Endereco endereco = enderecoService.obterEnderecoPorID(id);
 
         if (endereco == null)

@@ -41,6 +41,13 @@
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.models</groupId>
+            <artifactId>endereco-models</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
     <!-- 3. Plugin obrigatório para rodar o Spring Boot corretamente -->

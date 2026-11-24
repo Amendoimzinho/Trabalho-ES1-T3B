@@ -1,4 +1,4 @@
-package com.trabalho_es_3b.trabalhot3b.model.dto;
+package com.trabalho_es_3b.trabalhot3b.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

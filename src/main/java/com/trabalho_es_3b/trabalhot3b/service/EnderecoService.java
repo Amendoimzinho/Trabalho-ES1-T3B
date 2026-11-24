@@ -1,7 +1,8 @@
 package com.trabalho_es_3b.trabalhot3b.service;
 
-import com.trabalho_es_3b.trabalhot3b.model.*;
-import com.trabalho_es_3b.trabalhot3b.model.dto.ViaCepDTO;
+//import com.trabalho_es_3b.trabalhot3b.model.*;
+import org.models.*;
+import com.trabalho_es_3b.trabalhot3b.dto.ViaCepDTO;
 import com.trabalho_es_3b.trabalhot3b.util.Utils;
 import org.springframework.stereotype.Service;
 
