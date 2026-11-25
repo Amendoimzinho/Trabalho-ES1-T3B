@@ -6,7 +6,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -279,5 +278,34 @@ public class EnderecoDAO {
         endereco.setId(idEndereco);
 
         return endereco;
+    }
+
+    public TipoLogradouro obterTipoLogradouroPorNome(String nomeTipoLogradouro){
+        String sql = """
+        SELECT * FROM "TipoLogradouro"
+        WHERE "nomeTipoLogradouro" = ?
+        """;
+
+        return jdbc.query(sql, rs -> {
+            TipoLogradouro tl = null;
+            if (rs.next()) tl = new TipoLogradouro(nomeTipoLogradouro);
+            return tl;
+        }, nomeTipoLogradouro);
+    }
+
+    public UnidadeFederacao obterUnidadeFederacaoPorNome(String nomeUF){
+        String sql = """
+        SELECT * FROM "Estado"
+        WHERE "nomeEstado" = ?
+        """;
+
+        return jdbc.query(sql, rs -> {
+            UnidadeFederacao uf = null;
+            if (rs.next()) uf = new UnidadeFederacao(
+                    rs.getString("siglaUF"),
+                    nomeUF
+            );
+            return uf;
+        }, nomeUF);
     }
 }

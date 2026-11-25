@@ -30,8 +30,8 @@ public class EnderecoController {
         return ResponseEntity.ok(enderecoSalvo);
     }
 
-    @GetMapping("/busca")
-    public ResponseEntity<List<Endereco>> obterEnderecoPorCEP(@RequestParam String cep) {
+    @GetMapping("/busca/cep/{cep}")
+    public ResponseEntity<List<Endereco>> obterEnderecoPorCEP(@PathVariable String cep) {
         List<Endereco> enderecosPorCep = enderecoService.obterEnderecoPorCEP(cep);
 
         if (enderecosPorCep == null || enderecosPorCep.isEmpty())
@@ -40,8 +40,8 @@ public class EnderecoController {
         return ResponseEntity.ok(enderecosPorCep);
     }
 
-    @GetMapping("/busca")
-    public ResponseEntity<Endereco> obterEnderecoPorID(@RequestParam Integer id) {
+    @GetMapping("/busca/id/{id}")
+    public ResponseEntity<Endereco> obterEnderecoPorID(@PathVariable Integer id) {
         Endereco endereco = enderecoService.obterEnderecoPorID(id);
 
         if (endereco == null)
